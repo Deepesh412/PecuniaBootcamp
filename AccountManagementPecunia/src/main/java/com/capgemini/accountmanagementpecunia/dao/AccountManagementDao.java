@@ -1,16 +1,21 @@
 package com.capgemini.accountmanagementpecunia.dao;
 
+import java.io.Serializable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import com.capgemini.accountmanagementpecunia.entities.Customer;
+import com.capgemini.accountmanagementpecunia.entities.Account;
+//import com.capgemini.accountmanagementpecunia.entities.Customer;
+@Repository
+public interface AccountManagementDao extends JpaRepository<Account,Serializable>{
 
-public interface AccountManagementDao extends JpaRepository<Customer,Integer>{
-
-		
-		@Query("select f from Customer f where account_Id=?1")
-		Customer findByAccountId(String accountId);
+	
+	
+		@Query("select f from Account f where account_Id=?1")
+		Account findByAccountId(String accountId);
 		
 		@Modifying
 		@Query("update Customer SET customer_Name=?2 where account_Id=?1")
@@ -29,9 +34,9 @@ public interface AccountManagementDao extends JpaRepository<Customer,Integer>{
 		void deleteAccount(String accountId);
 		
 		
-		@Modifying
-		@Query("delete from Customer e where account_Id=?1")
-		void deleteCustomer(String accountId);
+	//	@Modifying
+	//	@Query("delete from Customer e where account_Id=?1")
+	//	void deleteCustomer(String accountId);
 	    
 	}
 

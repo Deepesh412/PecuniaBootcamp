@@ -35,9 +35,9 @@ public class Customer {
 	private String address;
 	
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="accountId")
-	private Account account;
+//	@OneToOne(cascade=CascadeType.ALL)
+//	@JoinColumn(name="accountId")
+//	private Account account;
 
 
 	public String getAadharNumber() {
@@ -110,14 +110,7 @@ public class Customer {
 	}
 
 
-	public Account getAccount() {
-		return account;
-	}
-
-
-	public void setAccount(Account account) {
-		this.account = account;
-	}
+	
 	
 	
 	
