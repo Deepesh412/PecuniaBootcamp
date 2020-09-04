@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.accountmanagementpecunia.entities.Account;
 import com.capgemini.accountmanagementpecunia.entities.Customer;
 import com.capgemini.accountmanagementpecunia.exceptions.IdAlreadyExistsException;
 import com.capgemini.accountmanagementpecunia.exceptions.IdNotFoundException;
@@ -28,71 +27,46 @@ public class AccountController {
 	private AccountManagementService service;
 	
 	@PostMapping("/create")
-	public ResponseEntity<String> addAccount( @RequestBody Account account )throws IdAlreadyExistsException{
-		Account account1 = service.findByAccountId(account.getAccountId());
-		if(account1!=null)
+	public ResponseEntity<String> addAccount( @RequestBody Customer customer )throws IdAlreadyExistsException{
+		Customer customer1 = service.findByAccountId(customer.getAccount().getAccountId());
+		if(customer1!=null)
 		{
 			throw new IdAlreadyExistsException("Account ID already exists");
 		}
 		else
 		{
-			service.addAccount(account);
+			service.addAccount(customer);
 			ResponseEntity<String> re = new ResponseEntity<String>("Account created successfully",HttpStatus.OK);
 			return re;
 		}
 	}
 
-	@GetMapping("/find/{accountId")
-	public Account findByAccountId(@PathVariable String accountId)
+	@GetMapping("/find/{accountId}")
+	public Customer findByAccountId(@PathVariable String accountId)
 	{
 		return service.findByAccountId(accountId);
 	}
 	
 	
-	@PutMapping("/update/{accountId}/{customerName}")
-	public ResponseEntity<String> updateName(@PathVariable("accountId")String accountId,@PathVariable("customerName")String customerName) throws IdNotFoundException
-	   {
-		Account account=service.findByAccountId(accountId);
-		if(account==null) {
+	@PutMapping("/update/{account_Id}/{customerName}/{contactNumber}/{address}")
+	public ResponseEntity<String> updateAccount(@PathVariable("account_Id")String accountId,@PathVariable("customerName")String customerName,
+			@PathVariable("contactNumber")String contactNumber,@PathVariable("address")String address) throws IdNotFoundException {
+		Customer customer=service.findByAccountId(accountId);
+		if(customer==null) {
 			throw new IdNotFoundException("Plese enter Valid account Id");
 		}
 		else {
-			ResponseEntity<String> rs=  new ResponseEntity<String>(service.updateName(accountId, customerName),HttpStatus.OK);
+			ResponseEntity<String> rs=  new ResponseEntity<String>(service.updateAccount(accountId, customerName, contactNumber, address),HttpStatus.OK);
 			return rs;
 		}	
 	}
 	
-	@PutMapping("/updateContact/{accountId}/{contactNumber}")
-	public ResponseEntity<String> updateContact(@PathVariable("accountId")String accountId,@PathVariable("contactNumber")String contactNumber) throws IdNotFoundException
-	   {
-		Account account=service.findByAccountId(accountId);
-		if(account==null) {
-			throw new IdNotFoundException("Plese enter Valid account Id");
-		}
-		else {
-			ResponseEntity<String> rs=  new ResponseEntity<String>(service.updateContact(accountId, contactNumber),HttpStatus.OK);
-			return rs;
-		}	
-	}
-	
-	@PutMapping("/updateAddress/{accountId}/{address}")
-	public ResponseEntity<String> updateAddress(@PathVariable("accountId")String accountId,@PathVariable("address")String address) throws IdNotFoundException
-	   {
-		Account account=service.findByAccountId(accountId);
-		if(account==null) {
-			throw new IdNotFoundException("Plese enter Valid account Id");
-		}
-		else {
-			ResponseEntity<String> rs=  new ResponseEntity<String>(service.updateAddress(accountId, address),HttpStatus.OK);
-			return rs;
-		}	
-	}
-	
+
 	@DeleteMapping("/delete/{accountId}")
 	public ResponseEntity<String> deleteCustomer(@PathVariable("accountId") String accountId) throws IdNotFoundException 
 	{
-		Account account=service.findByAccountId(accountId);
-		if(account==null) {
+		Customer customer=service.findByAccountId(accountId);
+		if(customer==null) {
 			throw new IdNotFoundException("AccountId does not exists!");
 		}
 		else {

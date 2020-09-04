@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.accountmanagementpecunia.dao.AccountManagementDao;
-import com.capgemini.accountmanagementpecunia.entities.Account;
+//import com.capgemini.accountmanagementpecunia.entities.Account;
 import com.capgemini.accountmanagementpecunia.entities.Customer;
 
 @Service
@@ -18,41 +18,28 @@ public class AccountManagementServiceImpl implements AccountManagementService {
 	private AccountManagementDao dao;
 
 	@Override
-	public String addAccount(Account account) {
-		dao.save(account);
+	public String addAccount(Customer customer) {
+		dao.save(customer);
 		return "Account created successfully";
 	}
 
 	@Override
-	public Account findByAccountId(String accountId) {
+	public Customer findByAccountId(String accountId) {
 		
 		return dao.findByAccountId(accountId);
 	}
 
 	@Override
-	public String updateName(String accountId, String customerName) {
-		dao.updateName(accountId, customerName);
+	public String updateAccount(String accountId, String customerName, String contactNumber, String address) {
+		dao.updateAccount(accountId, customerName, contactNumber, address);
 		return "Updated successfully";
 	}
-
-	@Override
-	public String updateContact(String accountId, String contactNumber) {
-		dao.updateContact(accountId, contactNumber);
-		return "Updated successfully";
-	}
-
-	@Override
-	public String updateAddress(String accountId, String address) {
-		dao.updateAddress(accountId, address);
-		return "Updated successfully";
-	}
-	
-	
 
 	@Override
 	public String deleteAccount(String accountId) {
+		dao.deletecustomer(accountId);
 		dao.deleteAccount(accountId);
-		return "deleted successfully";
+		return "Deleted Account";
 	}
 
 	
