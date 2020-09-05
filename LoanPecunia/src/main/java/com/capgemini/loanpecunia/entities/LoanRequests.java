@@ -3,7 +3,9 @@ package com.capgemini.loanpecunia.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +14,8 @@ import javax.persistence.Table;
 public class LoanRequests {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "loanId_Sequence")
+	@SequenceGenerator(name = "loanId_Sequence", sequenceName = "loan_id_SEQ")
 	private int loanId;
 	
 	@Column(length=12)
@@ -30,10 +33,10 @@ public class LoanRequests {
 	@Column(length=10)
 	private double loanRoi;
 	
-	@Column(length=50)
+	@Column(length=15)
 	private String loanStatus;
 	
-	@Column(length=50)
+	@Column(length=15)
 	private String loanType;
 
 	public int getLoanId() {
@@ -113,6 +116,10 @@ public class LoanRequests {
 		this.loanType = loanType;
 	}
 
+	public LoanRequests() {
+
+	}
+	
 	@Override
 	public String toString() {
 		return "LoanRequests [loanId=" + loanId + ", accountId=" + accountId + ", loanAmount=" + loanAmount

@@ -10,27 +10,28 @@ import javax.persistence.Table;
 public class LoanDisbursal {
 
 	@Id
+	@Column(length=8)
 	private int loanId;
 	
 	@Column(length=12)
 	private String accountId;
 	
-	@Column(length=12)
+	@Column(length=8)
 	private double loanAmount;
 	
-	@Column(length=12)
+	@Column(length=8)
 	private int loanTenure;
 	
-	@Column(length=12)
+	@Column(length=8)
 	private int creditScore;
 	
-	@Column(length=12)
+	@Column(length=10)
 	private double loanRoi;
 	
-	@Column(length=50)
+	@Column(length=15)
 	private String loanStatus;
 	
-	@Column(length=50)
+	@Column(length=15)
 	private String loanType;
 	
 	@Column(length=10)
