@@ -72,7 +72,7 @@ public class LoanController {
 	}
 	
 	
-	@PostMapping("/updateBal")
+/*	@PostMapping("/updateBal")
 	public ResponseEntity<String> updateBal(@RequestBody LoanDisbursal loandis) {
 		if(loandis==null) 
 		{
@@ -84,6 +84,6 @@ public class LoanController {
 			return new ResponseEntity<String>(update, new HttpHeaders(), HttpStatus.OK);
 		}
 		}
-	
+	*/
 	
 }

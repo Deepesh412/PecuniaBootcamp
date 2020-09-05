@@ -131,7 +131,7 @@ public class LoanPecuniaServiceImpl implements LoanPecuniaService {
 	     return (List<LoanDisbursal>) disburseDao.findAllRejected(accountId);
 	}
 
-	@Override
+	/*@Override
 	public String updateBalance(LoanDisbursal loandis) {
         
 		if(loandis.getLoanTenure()>0)
@@ -169,7 +169,7 @@ public class LoanPecuniaServiceImpl implements LoanPecuniaService {
 		} else {
 			return "No pending loan!!!";
 		}
-	}
+	}*/
 			
 		
 }
