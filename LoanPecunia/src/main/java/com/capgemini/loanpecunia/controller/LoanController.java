@@ -72,18 +72,5 @@ public class LoanController {
 	}
 	
 	
-/*	@PostMapping("/updateBal")
-	public ResponseEntity<String> updateBal(@RequestBody LoanDisbursal loandis) {
-		if(loandis==null) 
-		{
-			throw new NullFoundException("All fields are required");
-		}
-		else 
-		{
-			String update = service.updateBalance(loandis);
-			return new ResponseEntity<String>(update, new HttpHeaders(), HttpStatus.OK);
-		}
-		}
-	*/
 	
 }

@@ -12,5 +12,5 @@ public interface LoanPecuniaService {
 	public ArrayList<LoanRequests> getAllRequests();
 	public  List<LoanDisbursal> getApproveLoans(String accountId);
 	public List<LoanDisbursal> getRejectedLoans(String accountId);
-	//public String updateBalance(LoanDisbursal loandis);
+	
 }

@@ -131,45 +131,6 @@ public class LoanPecuniaServiceImpl implements LoanPecuniaService {
 	     return (List<LoanDisbursal>) disburseDao.findAllRejected(accountId);
 	}
 
-	/*@Override
-	public String updateBalance(LoanDisbursal loandis) {
-        
-		if(loandis.getLoanTenure()>0)
-		{
-			loandis.setLoanId(loandis.getLoanId());
-			loandis.setAccountId(loandis.getAccountId());
-			loandis.setCreditScore(loandis.getCreditScore());
-			loandis.setEmi(loandis.getEmi());
-            
-			double amount = loandis.getLoanAmount() - loandis.getEmi();
-			
-			loandis.setLoanAmount(amount);
-			loandis.setLoanRoi(loandis.getLoanRoi());
-			loandis.setLoanStatus(loandis.getLoanStatus());
-			loandis.setLoanTenure(loandis.getLoanTenure() - 1);
-			loandis.setLoanType(loandis.getLoanType());
-
-			transaction.setAccountId(loandis.getAccountId());
-			transaction.setTransAmount(loandis.getEmi());
-			transaction.setTransDate(date);
-			transaction.setTransFrom(loandis.getAccountId());
-			transaction.setTransId(rand.nextInt(1000));
-			transaction.setTransTo("Pecunia Bank");
-			transaction.setTransType("EMI");
-			transac.save(transaction);
-			
-			Account details = account.selectById(loandis.getAccountId());
-			details.setAmount(details.getAmount() - loandis.getEmi());
-			account.save(details);
-
-			disburseDao.save(loandis);
-
-			return loandis.getLoanType() + " EMI Rs/- " + loandis.getEmi() + " from " + loandis.getAccountId()
-					+ " account is paid!! ";
-		} else {
-			return "No pending loan!!!";
-		}
-	}*/
-			
+	
 		
 }

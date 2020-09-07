@@ -63,7 +63,7 @@ public class AccountManagementPecuniaApplicationTests {
 		    Assert.assertNotNull(customer);
 	}
 	
-	@Test
+/*	@Test
 	public void updateAccount() throws URISyntaxException{
 		RestTemplate restTemplate = new RestTemplate();
 	    final String baseUrl = "http://localhost:" +8098+ "/AccountManagement/update/222222222223/Harsha/7659873099/Mushrambaa";
@@ -78,7 +78,7 @@ public class AccountManagementPecuniaApplicationTests {
         ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
 	    Assert.assertNotNull(customer);
-	}	
+	}*/	
 	
 	
 	@Test

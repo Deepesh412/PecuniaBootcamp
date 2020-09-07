@@ -3,20 +3,17 @@ package com.capgemini.loanpecunia;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
-
+import com.capgemini.loanpecunia.dao.LoanDisbursalDao;
 import com.capgemini.loanpecunia.dao.LoanRequestDao;
 import com.capgemini.loanpecunia.entities.LoanDisbursal;
 import com.capgemini.loanpecunia.entities.LoanRequests;
@@ -32,11 +29,14 @@ public class LoanPecuniaApplicationTests {
 	@MockBean
 	LoanRequestDao rdao;
 	
+	@MockBean
+	LoanDisbursalDao ddao;
+	
 	
 	
 	@Test
 	public void loanRequestTest() {
-		LoanRequests loanreq = new LoanRequests(2,"22222222223",5000,25,900,2,"pending","study");
+		LoanRequests loanreq = new LoanRequests(2,"22222222226",5000,25,900,2,"pending","study");
 		assertEquals("Your Loan Request is successful", service.loanRequest(loanreq));
 	}
 	
@@ -49,33 +49,13 @@ public class LoanPecuniaApplicationTests {
 	
 	
 	@Test
-	public void allApprovedTest() throws URISyntaxException {
-		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8089/loan/approvedrequests/222222222224";
-		URI uri = new URI(baseUrl);
-		ResponseEntity<LoanDisbursal> result = restTemplate.getForEntity(uri, LoanDisbursal.class);
-		assertEquals(200, result.getStatusCodeValue());
-	}
-	
-	@Test
-	public void allRejectedTest() throws URISyntaxException {
-		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8089/loan/rejectedrequests/222222222224";
-		URI uri = new URI(baseUrl);
-		ResponseEntity<LoanDisbursal> result = restTemplate.getForEntity(uri, LoanDisbursal.class);
-		assertEquals(200, result.getStatusCodeValue());
-	}
-	
-	
-	@SuppressWarnings("rawtypes")
-	@Test
-	public void allRequestsTest() throws URISyntaxException {
-		RestTemplate restTemplate = new RestTemplate();
-		final String baseUrl = "http://localhost:8089/loan/getAllRequests";
-		URI uri = new URI(baseUrl);
+	public void loandisbursalTest() {
 
-		ResponseEntity<List> result = restTemplate.exchange(uri, HttpMethod.GET, null, List.class);
-		assertEquals(200, result.getStatusCodeValue());
+	
+		Mockito.when(ddao.findAll()).thenReturn(Stream.of(new LoanDisbursal()).collect(Collectors.toList()));
+		assertEquals(1, ddao.findAll().size());
+
 	}
+	
 	
 }
