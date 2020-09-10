@@ -12,10 +12,10 @@ import javax.persistence.Table;
 public class Transactions {
 
 	@Id
-	@Column(length=8)
+	@Column(length=15)
 	private int transId;
 	
-	@Column(length=8)
+	@Column(length=15)
 	private String transType;
 	
 	@Column(length=8)

@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.capgemini.loanpecunia.entities.LoanDisbursal;
 import com.capgemini.loanpecunia.entities.LoanRequests;
@@ -21,6 +22,7 @@ import com.capgemini.loanpecunia.service.LoanPecuniaService;
 
 @RestController
 @RequestMapping("/loan")
+@CrossOrigin("http://localhost:4200")
 public class LoanController {
 
 	@Autowired
@@ -46,31 +48,19 @@ public class LoanController {
 		return new ResponseEntity<List<LoanRequests>>(requests, HttpStatus.OK);
 	}
 	
-	@GetMapping("/approvedrequests/{accountId}")
-	public List<LoanDisbursal> allapproved(@PathVariable String accountId){
-		if(accountId == null)
-		{
-			throw new NullFoundException("cannot be null");
-		}
-		else
-		{
-			return service.getApproveLoans(accountId);
-		}
+   @GetMapping("/approvedrequests")
+	public ArrayList<LoanDisbursal> getApproveLoans(){
+	   
+			return (ArrayList<LoanDisbursal>)service.getApproveLoans();
+		
 	}
 	
 	
-	@GetMapping("/rejectedrequests/{accountId}")
-	public List<LoanDisbursal> allRejected(@PathVariable String accountId){
-		if(accountId == null)
-		{
-			throw new NullFoundException("cannot be null");
-		}
-		else
-		{
-			return service.getRejectedLoans(accountId);
-		}
+	@GetMapping("/rejectedrequests")
+	public ArrayList<LoanDisbursal> getRejectedLoans(){
+		
+			return (ArrayList<LoanDisbursal>)service.getRejectedLoans();
+		
 	}
-	
-	
 	
 }

@@ -1,23 +1,18 @@
 package com.capgemini.loanpecunia.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.loanpecunia.dao.AccountDao;
 import com.capgemini.loanpecunia.dao.LoanDisbursalDao;
 import com.capgemini.loanpecunia.dao.LoanRequestDao;
-import com.capgemini.loanpecunia.dao.TransactionsDao;
 import com.capgemini.loanpecunia.entities.Account;
 import com.capgemini.loanpecunia.entities.LoanDisbursal;
 import com.capgemini.loanpecunia.entities.LoanRequests;
-import com.capgemini.loanpecunia.entities.Transactions;
 import com.capgemini.loanpecunia.exceptions.BankAccountNotFound;
 
 @Service
@@ -29,14 +24,9 @@ public class LoanPecuniaServiceImpl implements LoanPecuniaService {
 	private AccountDao account;
 	@Autowired
 	private LoanDisbursalDao disburseDao;
-	@Autowired
-	private TransactionsDao transac;
 	
+	LoanDisbursal disburse = new LoanDisbursal();
 	
-	private Transactions transaction = new Transactions();
-    private Random rand = new Random();
- 	private long millis = System.currentTimeMillis();
-	private Date date = new Date(millis);
 	
 	
 	@Override
@@ -64,73 +54,58 @@ public class LoanPecuniaServiceImpl implements LoanPecuniaService {
 		return (ArrayList<LoanRequests>) dao.findAll();
 	}
 
-	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public List<LoanDisbursal> getApproveLoans(String accountId) {
-		LoanDisbursal disburse = new LoanDisbursal();
-		List<LoanRequests> request = dao.selectById(accountId);
-		@SuppressWarnings("rawtypes")
-		Iterator itr = request.iterator();
-		while(itr.hasNext())
-		{
-			LoanRequests requests = (LoanRequests) itr.next();
-			if (requests.getCreditScore() >= 670 && (!(disburseDao.existsById(requests.getLoanId())))) {
-				disburse.setAccountId(requests.getAccountId());
-				disburse.setCreditScore(requests.getCreditScore());
-				disburse.setLoanId(requests.getLoanId());
-				disburse.setLoanRoi(requests.getLoanRoi());
-				disburse.setLoanStatus("Accepted");
-				disburse.setLoanTenure(requests.getLoanTenure());
-				disburse.setLoanType(requests.getLoanType());
-				double interest = ((requests.getLoanAmount() * requests.getLoanTenure() * requests.getLoanRoi())/(100*12));
-				double emi = ((requests.getLoanAmount() + interest) / requests.getLoanTenure());
-				disburse.setEmi(emi);
-				disburse.setLoanAmount(requests.getLoanAmount() + interest);
-				
-				Account details = account.selectById(requests.getAccountId());
-				details.setAmount(details.getAmount() + requests.getLoanAmount());
-				account.save(details);
-				
-		        transaction.setAccountId(requests.getAccountId());
-		        transaction.setTransAmount(requests.getLoanAmount());
-				transaction.setTransDate(date);
-				transaction.setTransFrom("BANK");
-				transaction.setTransId(rand.nextInt(1000));
-				transaction.setTransTo(requests.getAccountId());
-				transaction.setTransType(requests.getLoanType());
-				transac.save(transaction);
-				
-				disburseDao.save(disburse);
-			}
+	public List<LoanDisbursal> getApproveLoans() {
+		ArrayList<LoanRequests> approve = disburseDao.getApprovedLoans();
+		Iterator iter = approve.iterator();
+		while (iter.hasNext()) {
+			LoanRequests l = (LoanRequests) iter.next();
+			if(!(disburseDao.existsById(l.getLoanId()))) {
+			disburse.setAccountId(l.getAccountId());
+			disburse.setCreditScore(l.getCreditScore());
+			disburse.setLoanAmount(l.getLoanAmount());
+			disburse.setLoanId(l.getLoanId());
+			disburse.setLoanRoi(l.getLoanRoi());
+			disburse.setLoanStatus("Accepted");
+			disburse.setLoanTenure(l.getLoanTenure());
+			disburse.setLoanType(l.getLoanType());
+			double interest = (l.getLoanAmount() * l.getLoanTenure() * l.getLoanRoi() / (100 * 12));
+			double emi = ((l.getLoanAmount() + interest) / l.getLoanTenure());
+			emi=Math.round(emi*100)/100;
+			disburse.setEmi(emi);
+			System.out.println(disburse);
+			disburseDao.save(disburse);
+		}else {
+			continue;
 		}
-		return (List<LoanDisbursal>) disburseDao.findAllAccepted(accountId);
+			}
+		return disburseDao.findAllAccepted();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public List<LoanDisbursal> getRejectedLoans(String accountId) {
-	     LoanDisbursal disburse = new LoanDisbursal();
-	     List<LoanRequests> request = dao.selectById(accountId);	
-	     @SuppressWarnings("rawtypes")
-	     Iterator itr = request.iterator();
-	     while(itr.hasNext()) {
-	    	 LoanRequests requests = (LoanRequests) itr.next();
-	    	 
-	    	 if(requests.getCreditScore() < 670 && (!(disburseDao.existsById(requests.getLoanId())))) {
-	    		 disburse.setAccountId(requests.getAccountId());
-	    		 disburse.setCreditScore(requests.getCreditScore());
-	    		 disburse.setLoanAmount(0);
-	    		 disburse.setLoanId(requests.getLoanId());
-	    		 disburse.setLoanRoi(requests.getLoanRoi());
-	    		 disburse.setLoanStatus("Rejected");
-	    		 disburse.setLoanTenure(requests.getLoanTenure());
-	    		 disburse.setLoanType(requests.getLoanType());
-	    		 disburse.setEmi(0);
-	    		 disburseDao.save(disburse);
-	    	 }
-	     }
-	     return (List<LoanDisbursal>) disburseDao.findAllRejected(accountId);
+	public List<LoanDisbursal> getRejectedLoans() {
+		ArrayList<LoanRequests> approve = disburseDao.getRejectedLoans();
+		Iterator iter = approve.iterator();
+		while (iter.hasNext()) {
+			LoanRequests l = (LoanRequests) iter.next();			
+			disburse.setAccountId(l.getAccountId());
+			disburse.setCreditScore(l.getCreditScore());
+			disburse.setLoanAmount(0);
+			disburse.setLoanId(l.getLoanId());
+			disburse.setLoanRoi(l.getLoanRoi());
+			disburse.setLoanStatus("Rejected");
+			disburse.setLoanTenure(l.getLoanTenure());
+			disburse.setLoanType(l.getLoanType());
+			disburse.setEmi(0);
+			System.out.println(disburse);
+			disburseDao.save(disburse);			
+		}
+		return disburseDao.findAllRejected();
 	}
 
 	
-		
+	
+	
 }

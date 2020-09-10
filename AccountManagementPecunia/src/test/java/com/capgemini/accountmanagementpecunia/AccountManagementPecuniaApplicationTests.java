@@ -55,7 +55,7 @@ public class AccountManagementPecuniaApplicationTests {
 	@Test
 	public void showAccountDetailsTest() throws URISyntaxException {
 		RestTemplate restTemplate=new RestTemplate();
-		final String Url= "http://localhost:" +8098+ "/AccountManagement/find/222222222223";
+		final String Url= "http://localhost:" +8098+ "/AccountManagement/find/222222222224";
 		URI uri=new URI(Url);
 		 ResponseEntity<Customer> result = restTemplate.getForEntity(uri, Customer.class);
 		    Customer customer = result.getBody();
@@ -63,22 +63,6 @@ public class AccountManagementPecuniaApplicationTests {
 		    Assert.assertNotNull(customer);
 	}
 	
-/*	@Test
-	public void updateAccount() throws URISyntaxException{
-		RestTemplate restTemplate = new RestTemplate();
-	    final String baseUrl = "http://localhost:" +8098+ "/AccountManagement/update/222222222223/Harsha/7659873099/Mushrambaa";
-	    URI uri = new URI(baseUrl);
-	    
-	    Customer customer=new Customer();
-        
-		HttpHeaders headers = new HttpHeaders();
-        headers.set("X-COM-MERGE", "updated successfully");      
-        HttpEntity<Customer> request = new HttpEntity<>(customer, headers);
-        
-        ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
-        Assert.assertEquals(200, result.getStatusCodeValue());
-	    Assert.assertNotNull(customer);
-	}*/	
 	
 	
 	@Test

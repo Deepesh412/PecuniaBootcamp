@@ -33,12 +33,7 @@ public class LoanPecuniaApplicationTests {
 	LoanDisbursalDao ddao;
 	
 	
-	
-	@Test
-	public void loanRequestTest() {
-		LoanRequests loanreq = new LoanRequests(2,"22222222226",5000,25,900,2,"pending","study");
-		assertEquals("Your Loan Request is successful", service.loanRequest(loanreq));
-	}
+
 	
 	@Test
 	public void loanRequestTestMock() {
